@@ -3,7 +3,7 @@
 // https://api.github.com/users/avimalhotra
 // https://www.weatherapi.com/
 
-const products = document.querySelector("#product");
+const products = document.querySelector("#fakestoreapi");
 
 const prod = fetch("https://fakestoreapi.com/products");
 prod
@@ -17,10 +17,26 @@ prod
   .then((prdData) => {
     prdData.forEach((product) => {
       const tableTr = document.createElement("tr");
-      tableTr.innerHTML = `<td>${product.id}</td><td>${product.title}</td><td>${product.price}</td><td>${product.description}</td>`;
-
-      products.appendChild(tableTr);
+      products.innerHTML += `<div class="fakestoreapi">
+     
+      <div class="fakestore-title">${product.title}</div>
+      <div class="fakestore-price">${product.price}</div>
+      <div class="fakestore-description">${product.description}</div>
+      <div class="fakestore-category">${product.category}</div>
+      <div class="fakestore-image"><img src="${product.image}"></div>
+      <div class="fakestore-rating">
+        <span class="stars" data-rating="${product.rating.rate}"></span>
+        <span class="rating-count">(${product.rating.count} reviews)</span>
+      </div>
+      <button class="buy-button">Buy Now</button>
+      </div>`;
+      // products.appendChild(tableTr);
     });
+    document.querySelectorAll(".stars").forEach((star) => {
+      const rating = parseFloat(star.getAttribute("data-rating")) || 0;
+      star.style.setProperty("--rating", rating.toFixed(1));
+    });
+
     console.log("prd data", prdData);
   })
   .catch((error) => {
@@ -94,20 +110,18 @@ arr.map((colorPallte) => {
 document.body.appendChild(ul);
 
 let weatherResult = document.querySelector("#weatherResult");
-for(let k = 1; k <= 2; k++){
-    for (let i = 1; i <= 10; i++) {
-  // console.log('parent', i);
+for (let k = 1; k <= 2; k++) {
+  for (let i = 1; i <= 10; i++) {
+    // console.log('parent', i);
     let innerLoop = document.createElement("div");
-  for (let j = 1; j <= i; j++) {
-    innerLoop.innerHTML += `*`;
-    innerLoop.classList.add('foLoop')
-    // console.log('child', j);
+    for (let j = 1; j <= i; j++) {
+      innerLoop.innerHTML += `*`;
+      innerLoop.classList.add("foLoop");
+      // console.log('child', j);
+    }
+    weatherResult.appendChild(innerLoop);
   }
-    weatherResult.appendChild(innerLoop)
- 
 }
-}
-
 
 // let weatherResult = document.querySelector("#weatherResult");
 
@@ -119,19 +133,18 @@ for(let k = 1; k <= 2; k++){
 //   weatherResult.appendChild(innerLoop);
 // }
 
-
-
-const ecart = fetch('https://dummyjson.com/products')
-const ecommerce = document.querySelector('#ecommerce')
-ecart.then((ecartResponse)=>{
-if(!ecartResponse.ok){
-    throw new Error(`this is an error ${ecartResponse.status}`)
-}
-return ecartResponse.json()
-}).then((ecartProduct)=>{
-    ecartProduct.products.forEach((ecartData)=>{
-    console.log('datayryr', ecartData)
-    ecommerce.innerHTML += `<div class="product-card"><div class="prodid">${ecartData.id}</div><div class="prodtitle">${ecartData.title}</div><div class="proddescription">${ecartData.description}</div><div class="prodcategory">${ecartData.category}</div><div class="prodprice">${ecartData.price}</div></div>`
-
-    })
-})
+const ecart = fetch("https://dummyjson.com/products");
+const ecommerce = document.querySelector("#ecommerce");
+ecart
+  .then((ecartResponse) => {
+    if (!ecartResponse.ok) {
+      throw new Error(`this is an error ${ecartResponse.status}`);
+    }
+    return ecartResponse.json();
+  })
+  .then((ecartProduct) => {
+    ecartProduct.products.forEach((ecartData) => {
+      console.log("datayryr", ecartData);
+      ecommerce.innerHTML += `<div class="product-card"><div class="prodid">${ecartData.id}</div><div class="prodtitle">${ecartData.title}</div><div class="proddescription">${ecartData.description}</div><div class="prodcategory">${ecartData.category}</div><div class="prodprice">${ecartData.price}</div></div>`;
+    });
+  });
